@@ -4,17 +4,18 @@
 
 require 'osx/cocoa'
 require 'rubygems'  # (not used here, but will probably come in useful in a lot of places.
+require 'pp'        # dito
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'app/standardutilities') # To be able to require log
 require 'log'
 
 #OSX::NSLog "require_app_files loaded" # TEST
 
-module Require_app_files
+module Require_application_files
   LOG = Log::classlog(self)
   NAMEBODYS = []   # Used to check aginst duplicate names.  
 
   # Add app-dir and all its sub-dirs to $LOAD_PATH
-  def Require_app_files.add_to_load_path(context_dir)
+  def self.add_to_load_path(context_dir)
     raise "'#{context_dir}' does not seam to exist." unless File.exist?(context_dir)
     raise "Must be a directory." unless File.directory?(context_dir)
 
@@ -34,14 +35,14 @@ module Require_app_files
   end
 
   # Requires standardutilites (so that ordinary rb files does not have to think about requiering them)
-  def Require_app_files.require_standardutilities
+  def self.require_standardutilities
     # Assumes that 'add_to_load_path' has been runned
     require 'log'
     require 'pathstring'
   end
 
   # Recursively require all rb files
-  def Require_app_files.require_all(context_dir)
+  def self.require_all(context_dir)
     raise "'#{context_dir}' does not seam to exist." unless File.exist?(context_dir)
     raise "Must be a directory." unless File.directory?(context_dir)
 

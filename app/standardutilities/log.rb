@@ -299,13 +299,13 @@ class Log #< OSX::NSObject
     @@logs[:default]
   end
   
-  # Extracts the message from the last log-line.
-  # Primarily used for testing
-  # TODO: Change to instance method, using conventional ways of identifying the log.
-  require 'tommys_utilities'
-  def Log.message_in_last_line_of_log(path)
-    return Tommys_utilities::last_line_of_file(path).scan(/\[.*/)[0]
-  end
+  ## Extracts the message from the last log-line.
+  ## Primarily used for testing
+  ## TODO: Change to instance method, using conventional ways of identifying the log.
+  #require 'tommys_utilities'
+  #def Log.message_in_last_line_of_log(path)
+  #  return Tommys_utilities::last_line_of_file(path).scan(/\[.*/)[0]
+  #end
   
 end
 

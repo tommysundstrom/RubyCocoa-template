@@ -8,11 +8,11 @@ me = File.expand_path(__FILE__)
 test_root = File.dirname(me)
 top_dir = File.dirname(test_root) # (Note: This way to
       # find root is not safe inside the application, but here in test it's ok)
-require File.join(top_dir, 'require_app_files.rb')  # The module that handles application file loading
+require File.join(top_dir, 'require_application_files.rb')  # The module that handles application file loading
 app_root = File.join(top_dir, 'app')
-Require_app_files::add_to_load_path(app_root)
-Require_app_files::require_standardutilities
-Require_app_files::require_all(app_root)
+Require_application_files::add_to_load_path(app_root)
+Require_application_files::require_standardutilities
+Require_application_files::require_all(app_root)
 
 
 # This loads the application files the same way as it's done

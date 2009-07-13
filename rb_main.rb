@@ -7,6 +7,7 @@
 #
 
 require 'osx/cocoa'
+include OSX
 
 # Require the helper function that loads all Rubys project files
 require(File.join(File.dirname(__FILE__), 'require_application_files.rb'))
@@ -24,7 +25,7 @@ begin
         # is always (?) the dir where this file (rb_main.rb) is.)
   PROJECT_ROOT = File.dirname(context)
   APP_ROOT = File.join(PROJECT_ROOT, 'app')
-  Require_application_files::require_third_party_gems_and_lib(PROJECT_ROOT)
+  ### Tror bast ersatta med Fenestra-koden ### Require_application_files::require_third_party_gems_and_lib(PROJECT_ROOT)
   Require_application_files::add_to_load_path(APP_ROOT)
   Require_application_files::require_standardutilities
   Require_application_files::require_all(APP_ROOT)
@@ -38,9 +39,9 @@ def rb_main_init
   #context = OSX::NSBundle.mainBundle.resourcePath.fileSystemRepresentation # The resource dir of the app. (This
         # is always (?) the dir where this file (rb_main.rb) is.)
   app_root = File.join(File.dirname(context), 'app')
-  Require_app_files::add_to_load_path(app_root)
-  Require_app_files::require_standardutilities
-  Require_app_files::require_all(app_root)
+  Require_application_files::add_to_load_path(app_root)
+  Require_application_files::require_standardutilities
+  Require_application_files::require_all(app_root)
 end
 
 if $0 == __FILE__ then

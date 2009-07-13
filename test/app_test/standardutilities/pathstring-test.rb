@@ -212,7 +212,7 @@ class PathstringTests < Test::Unit::TestCase
       assert { Pathstring.new(__FILE__).application_name == 'FlatTemplate' }
     end
     
-    should "Extract application name from a file in the application, when given the unit-test path." do
+    should_eventually "Extract application name from a file in the application, when given the unit-test path." do
       assert_nothing_raised { Pathstring.new('/Users/Tommy/Programmering/Ruby/Projekt/FlatTemplate/Pathstring.rb') }
       assert_nothing_raised { Pathstring.new('/Users/Tommy/Programmering/Ruby/Projekt/FlatTemplate/Pathstring.rb').application_name }
       assert { Pathstring.new('/Users/Tommy/Programmering/Ruby/Projekt/FlatTemplate/Pathstring.rb').application_name == 'FlatTemplate' }

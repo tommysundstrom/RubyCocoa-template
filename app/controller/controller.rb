@@ -1,32 +1,25 @@
 require 'osx/cocoa'
 require 'log'
-require 'preferences'
-#require 'model_video_archive'
+
 
 
 class Controller < OSX::NSObject
   include OSX
-  CLASSLOG = Log.classlog(self)
+  LOG = Log.classlog(self)
 
   attr_reader :video_archive
 
   def init
     super_init
-    CLASSLOG.init(self)
-    @rblog = Log.new(__FILE__)
-    @rblog.debug "Initializing #{self.to_s}."
+    LOG.init(self)
 
-    @preferences = Preferences.new
-    @video_archive = Video_archive.new(@preferences)
-    # TODO: Move this to user interface and persistance:
-    @video_archive.set_inbox('/Users/Tommy/Programmering/Ruby/Projekt/ItunesFeeder_test/workflow/inbox')
-    @video_archive.set_processed_and_subfolders('/Users/Tommy/Programmering/Ruby/Projekt/ItunesFeeder_test/workflow/processed')
+
 
     return self
   end
 
   def awakeFromNib # Note: this is called also when the interface is defined from a Xib (xml version of nib)
-    CLASSLOG.info "---------- New session - awaken from nib/xib ----------"
+    LOG.info "---------- New session - awaken from nib/xib ----------"
     NSLog 'Awaken from Nib'    # Test
 
     ## @status_menu.setup_status_menu(self)    # Crashes when menu is used
@@ -36,57 +29,40 @@ class Controller < OSX::NSObject
     # Or maybe it goes into Video_archive.
   end
 
+  # Comment out if no status menu is needed
   def setup_status_menu   # I've tried to move this to a separate class, but it just crashes, so I'll keep it here.
-    CLASSLOG.debug "Enter setup_status_menu"
+    LOG.debug "Enter setup_status_menu"
     statusbar = NSStatusBar.systemStatusBar
     status_item = statusbar.statusItemWithLength(NSVariableStatusItemLength)
     image_name = NSBundle.mainBundle.pathForResource_ofType('stretch', 'tiff')
     image = NSImage.alloc.initWithContentsOfFile(image_name)
     status_item.setImage(image)  # TODO: fix the image
-    status_item.setTitle("AH")
+    status_item.setTitle("TEST")
 
     menu = NSMenu.alloc.init
     status_item.setMenu(menu)
 
-    menu_item = menu.addItemWithTitle_action_keyEquivalent( "Empty inbox once", "empty_inbox_once:", '')
-    menu_item.setTarget(self) # TODO: Will with all probably be moved to another class & module
+    # menu_item = menu.addItemWithTitle_action_keyEquivalent( "Empty inbox once", "empty_inbox_once:", '')
+    # menu_item.setTarget(self) # TODO: Will with all probably be moved to another class & module
 
     menu_item = menu.addItemWithTitle_action_keyEquivalent( "Test", "test:", '')  # TEST
     menu_item.setTarget(self)
-
-    menu_item = menu.addItemWithTitle_action_keyEquivalent( "Watch inbox", "watch_inbox:", '')  # Needs a selected marker, or a change to 'Stop watching inbox'
-    menu_item.setTarget(self) # TODO: Will with all probably be moved to another class & module
-
-    #menu_item = menu.addItemWithTitle_action_keyEquivalent( "Preferences...", "set_preferences:", '')
-    #menu_item.setTarget(@preferences)
 
     menu_item = menu.addItemWithTitle_action_keyEquivalent( "Quit", "terminate:", '')
     #menu_item.setKeyEquivalentModifierMask(NSCommandKeyMask)
     menu_item.setTarget(NSApp)
 
-    CLASSLOG.info("Added status menu")
+    LOG.info("Added status menu")
   end
 
-  def empty_inbox_once(sender)
-    CLASSLOG.debug "Started by #{sender} choosing empty_inbox_once"
+  # def empty_inbox_once(sender)
+    # LOG.debug "Started by #{sender} choosing empty_inbox_once"
 
-    @video_archive.empty_inbox
-    CLASSLOG.debug "Exits 'empty_inbox_once'"
-  end
+    # LOG.debug "Exits 'empty_inbox_once'"
+  # end
 
   def test(sender)
-    CLASSLOG.debug "Enters and exits test"
+    LOG.debug "Enters and exits test"
   end
 
-  def watch_inbox(sender)
-    OSX::NSLog "Now watching inbox '#{@video_archive.inbox}'."
-    Log.info "Watching inbox"
-    CLASSLOG.debug "Started by #{sender}"
-    # TODO A better way to loop: http://www.rubyinside.com/robustthread-for-safer-ruby-daemons-1948.html
-    while true do
-      CLASSLOG.debug "Checking the inbox"
-      @video_archive.empty_inbox
-      sleep 5 #60*10 # 10 minutes <- Should be a preference
-    end
-  end
 end
