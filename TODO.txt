@@ -1,0 +1,5 @@
+TODO
+
+* gem isolation (check the book and example files to figure out how it should work)
+
+* Use Mail.app for email notification.
