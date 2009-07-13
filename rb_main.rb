@@ -7,31 +7,32 @@
 #
 
 require 'osx/cocoa'
-$LOAD_PATH << File.dirname(__FILE__)
-require 'require_app_files'
-require 'pp' # TEST  
+
+# Require the helper function that loads all Rubys project files
+require(File.join(File.dirname(__FILE__), 'require_application_files.rb'))
+
+
+NSLog "--- rb_main.rb ---"
+NSLog "Ruby version: #{RUBY_VERSION}." # MacRuby version: #{MACRUBY_VERSION}." # Note: If this is not runned
+      # with MacRuby an error will be raised here.
+
+# Loading all Ruby project files. I've made my own version that is better suited for editing with
+# other editors than Xcode.
+begin
+  context = __FILE__
+  #context = OSX::NSBundle.mainBundle.resourcePath.fileSystemRepresentation # The resource dir of the app. (This
+        # is always (?) the dir where this file (rb_main.rb) is.)
+  PROJECT_ROOT = File.dirname(context)
+  APP_ROOT = File.join(PROJECT_ROOT, 'app')
+  Require_application_files::require_third_party_gems_and_lib(PROJECT_ROOT)
+  Require_application_files::add_to_load_path(APP_ROOT)
+  Require_application_files::require_standardutilities
+  Require_application_files::require_all(APP_ROOT)
+end
+
 
 def rb_main_init
-  ##OSX::NSLog "rb_main_init" # TEST
-  ##pp 'ARGV:'  # TEST
-  ##pp ARGV
-  ##OSX::NSLog "#{ARGV}"
-=begin  # Moved to rb_main_tommys_extra_init  $LOAD_PATH << File.dirname(File.expand_path(__FILE__)) # TEST
-  $LOAD_PATH << File.dirname(File.join(File.dirname(File.expand_path(__FILE__)), 'standardutilities')) # TEST
-  pp $LOAD_PATH
-  
-
-  path = OSX::NSBundle.mainBundle.resourcePath.fileSystemRepresentation
-  rbfiles = Dir.entries(path).select {|x| /\.rb\z/ =~ x}
-  rbfiles -= [ File.basename(__FILE__) ]
-  rbfiles.each do |path|
-    require( File.basename(path) )
-  end
-=end
-
-
-  # OSX::NSLog "Orignal rb_main.rb extended with some additons by Tommy"
-
+ 
   # Require and load files
   context = __FILE__
   #context = OSX::NSBundle.mainBundle.resourcePath.fileSystemRepresentation # The resource dir of the app. (This
